@@ -133,14 +133,6 @@ Ao selecionar cada ponto no mapa, são exibidas informações como:
 
 ---
 
-# Persistência de dados
-
-Os elementos criados ou modificados na aplicação são armazenados localmente utilizando o `localStorage` do navegador.
-
-Essa abordagem permite que os dados permaneçam disponíveis mesmo após o recarregamento da página. Além disso, o usuário pode exportar todos os elementos presentes no mapa para um arquivo GeoJSON.
-
----
-
 # Como executar o projeto
 
 1. Clone ou faça download do repositório.
