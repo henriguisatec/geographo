@@ -27,7 +27,7 @@ A escolha dessas tecnologias foi feita por sua simplicidade de integração e pe
 # Estrutura do projeto
 
 ```
-geographosanesul/
+geographo/
 │
 ├── index.html
 ├── style.css
