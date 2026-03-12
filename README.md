@@ -1,43 +1,30 @@
-# Geographo 🗺️
+# Geographo
 
-O **Geographo** é uma aplicação web interativa para **visualização, criação e edição de dados geográficos** diretamente em um mapa.
+## Visão geral
 
-A aplicação permite **desenhar elementos geográficos**, **editar informações**, **importar arquivos GeoJSON** e **exportar os dados criados**, utilizando a biblioteca **Leaflet**.
+Geographo é uma aplicação web desenvolvida para visualização e manipulação de dados geográficos em um mapa interativo. A aplicação permite importar arquivos no formato GeoJSON, visualizar seus elementos em um mapa, além de criar, editar e remover geometrias diretamente pela interface.
 
----
-
-# 📌 Funcionalidades
-
-* 🗺️ Visualização de mapa interativo
-* ✏️ Desenho de elementos no mapa:
-
-  * Marcadores
-  * Linhas
-  * Polígonos
-  * Retângulos
-  * Círculos
-* ✏️ Edição de elementos desenhados
-* 📝 Adição de informações (nome e endereço)
-* 📂 Importação de arquivos **GeoJSON**
-* 💾 Exportação de dados para **GeoJSON**
-* 🔁 Salvamento automático no **LocalStorage**
-* 📍 Exibição de **coordenadas e raio** nos popups
-* ✏️ Edição rápida com **duplo clique**
+O objetivo do projeto é demonstrar a manipulação de dados geoespaciais em ambiente web, utilizando padrões abertos como GeoJSON e bibliotecas especializadas para mapas interativos.
 
 ---
 
-# 🛠️ Tecnologias Utilizadas
+# Tecnologias utilizadas
 
-* **HTML5**
-* **CSS3**
-* **JavaScript**
-* **Leaflet**
-* **Leaflet Draw**
-* **GeoJSON**
+A aplicação foi construída utilizando tecnologias web simples e amplamente utilizadas.
+
+* HTML
+* CSS
+* JavaScript
+* Leaflet (visualização de mapas)
+* Leaflet Draw (criação e edição de geometrias)
+* GeoJSON (estrutura de dados geoespaciais)
+* OpenStreetMap (camada base do mapa)
+
+A escolha dessas tecnologias foi feita por sua simplicidade de integração e pela ampla adoção em aplicações de geoprocessamento na web.
 
 ---
 
-# 📂 Estrutura do Projeto
+# Estrutura do projeto
 
 ```
 geographo/
@@ -58,116 +45,131 @@ geographo/
 
 ---
 
-# 🚀 Como executar o projeto
+# Implementação dos requisitos
 
-1. Clone o repositório
+## Importação de dados
 
-```bash
-git clone https://github.com/seu-usuario/geographo.git
-```
+A aplicação permite a importação de arquivos nos formatos `.json` ou `.geojson`.
+Ao selecionar um arquivo, o sistema lê seu conteúdo e cria automaticamente uma camada de dados no mapa utilizando o padrão GeoJSON.
+
+Os elementos importados são convertidos para objetos Leaflet e adicionados à camada editável da aplicação.
+
+---
+
+## Mapa interativo
+
+O mapa é renderizado utilizando a biblioteca Leaflet e utiliza tiles do OpenStreetMap como camada base.
+
+A interface permite:
+
+* navegação com zoom
+* movimentação do mapa
+* visualização de elementos geográficos
+* interação direta com os elementos
+
+Quando os dados são carregados, o mapa ajusta automaticamente o enquadramento para exibir todos os elementos presentes.
+
+---
+
+## Operações CRUD
+
+A aplicação permite realizar as principais operações sobre os elementos geográficos.
+
+### Criação
+
+Novos elementos podem ser criados diretamente no mapa utilizando as ferramentas do Leaflet Draw.
+
+Os tipos suportados incluem:
+
+* pontos
+* linhas
+* polígonos
+* retângulos
+* círculos
+
+Durante a criação é possível atribuir propriedades como nome e endereço.
+
+---
+
+### Leitura
+
+Os elementos presentes no mapa podem ser visualizados e selecionados. Ao clicar em um elemento, um popup apresenta suas propriedades associadas, incluindo nome, endereço e coordenadas geográficas.
+
+---
+
+### Atualização
+
+As propriedades dos elementos podem ser alteradas através de interação direta na interface. Um duplo clique sobre o elemento permite modificar seus dados. Também é possível alterar sua geometria utilizando as ferramentas de edição.
+
+---
+
+### Remoção
+
+Elementos podem ser removidos utilizando a ferramenta de exclusão disponível na interface de edição do mapa.
+
+---
+
+## Visualização de propriedades
+
+Cada elemento do mapa possui um popup associado. Ao interagir com o elemento, o popup exibe suas propriedades, incluindo informações como:
+
+* nome
+* endereço
+* coordenadas geográficas
+* raio (para círculos)
+
+---
+
+# Unidades da Sanesul em Campo Grande
+
+O projeto inclui pontos representando unidades da empresa Sanesul localizadas em Campo Grande, MS. Esses pontos foram adicionados ao mapa utilizando coordenadas geográficas e possuem propriedades associadas.
+
+Ao selecionar cada ponto no mapa, são exibidas informações como:
+
+* nome da unidade
+* endereço
+* latitude
+* longitude
+
+---
+
+# Persistência de dados
+
+Os elementos criados ou modificados na aplicação são armazenados localmente utilizando o `localStorage` do navegador.
+
+Essa abordagem permite que os dados permaneçam disponíveis mesmo após o recarregamento da página. Além disso, o usuário pode exportar todos os elementos presentes no mapa para um arquivo GeoJSON.
+
+---
+
+# Como executar o projeto
+
+1. Clone ou faça download do repositório.
 
 2. Abra a pasta do projeto.
 
-3. Execute o arquivo:
+3. Execute o arquivo `index.html` em um navegador moderno.
 
-```
-index.html
-```
-
-Você pode abrir diretamente no navegador ou usar uma extensão como **Live Server** no VS Code.
+Opcionalmente, pode-se utilizar um servidor local para facilitar o desenvolvimento.
 
 ---
 
-# 📥 Importar dados
+# Importação de dados
 
-1. Clique no botão **Importar Dados**
-2. Selecione um arquivo:
-
-```
-.geojson
-.json
-```
-
-Os dados serão carregados automaticamente no mapa.
+1. Clique no botão **Importar Dados**.
+2. Selecione um arquivo `.json` ou `.geojson`.
+3. Os dados serão carregados e exibidos no mapa.
 
 ---
 
-# 📤 Exportar dados
+# Exportação de dados
 
-Clique no botão **Exportar Dados** para baixar todos os elementos desenhados no mapa como um arquivo:
+Para exportar os dados presentes no mapa:
 
-```
-map-data.geojson
-```
-
----
-
-# ✏️ Como editar elementos
-
-### Criar elementos
-
-Use as ferramentas de desenho no canto superior esquerdo do mapa.
-
-### Editar informações
-
-Dê **duplo clique no elemento** para editar:
-
-* Nome
-* Endereço (apenas marcadores)
-
-### Editar geometria
-
-Use a ferramenta **Edit** do Leaflet Draw.
+1. Clique no botão **Exportar Dados**.
+2. Um arquivo GeoJSON será gerado contendo todos os elementos atualmente presentes no mapa.
 
 ---
 
-# 💾 Salvamento automático
+# Considerações finais
 
-Todos os elementos criados são automaticamente salvos no:
-
-```
-localStorage do navegador
-```
-
-Ao recarregar a página, os dados são restaurados automaticamente.
-
----
-
-# 📄 Formato dos dados
-
-Os dados são armazenados no padrão **GeoJSON**, contendo:
-
-* Point (Marcadores)
-* LineString (Linhas)
-* Polygon (Polígonos)
-* Circle (implementado via propriedades personalizadas)
-
-Exemplo:
-
-```json
-{
-  "type": "Feature",
-  "properties": {
-    "nome": "Local Exemplo",
-    "endereco": "Rua Exemplo"
-  },
-  "geometry": {
-    "type": "Point",
-    "coordinates": [-54.6201, -20.4697]
-  }
-}
-```
-
----
-
-# 🧭 Base do mapa
-
-O mapa utiliza tiles do:
-
-**OpenStreetMap**
-
----
-
-# 📜 Licença
-
-Este projeto é de uso livre para fins **educacionais e experimentais**.
+A aplicação foi desenvolvida com foco na manipulação de dados geoespaciais em ambiente web, utilizando padrões abertos e bibliotecas amplamente utilizadas no ecossistema de geoprocessamento. A organização do código prioriza clareza e separação das responsabilidades principais da aplicação.
