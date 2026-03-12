@@ -122,7 +122,7 @@ Cada elemento do mapa possui um popup associado. Ao interagir com o elemento, o 
 
 # Unidades da Sanesul em Campo Grande
 
-O projeto inclui pontos representando unidades da empresa Sanesul localizadas em Campo Grande, MS. Esses pontos foram adicionados ao mapa utilizando coordenadas geográficas e possuem propriedades associadas.
+O projeto inclui pontos representando unidades da empresa Sanesul localizadas em Campo Grande, em `data/sanesul.geojson`. Esses pontos foram adicionados ao mapa utilizando coordenadas geográficas e possuem propriedades associadas.
 
 Ao selecionar cada ponto no mapa, são exibidas informações como:
 
@@ -139,9 +139,9 @@ Ao selecionar cada ponto no mapa, são exibidas informações como:
 
 2. Abra a pasta do projeto.
 
-3. Execute o arquivo `index.html` em um navegador moderno.
+3. Execute o arquivo `index.html` em um navegador.
 
-Opcionalmente, pode-se utilizar um servidor local para facilitar o desenvolvimento.
+O projeto foi desenvolvido utilizando o Live Server através do Google Chrome.
 
 ---
 
@@ -164,4 +164,4 @@ Para exportar os dados presentes no mapa:
 
 # Considerações finais
 
-A aplicação foi desenvolvida com foco na manipulação de dados geoespaciais em ambiente web, utilizando padrões abertos e bibliotecas amplamente utilizadas no ecossistema de geoprocessamento. A organização do código prioriza clareza e separação das responsabilidades principais da aplicação.
+A aplicação foi desenvolvida com foco na manipulação de dados geoespaciais em ambiente web, utilizando padrões abertos e bibliotecas amplamente utilizadas no ecossistema de geoprocessamento. A organização do código prioriza clareza e separação das responsabilidades principais da aplicação a favor da empresa Sanesul.
