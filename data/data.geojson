@@ -1,0 +1,39 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+
+            "type": "Feature",
+            "properties": {
+                "nome": "Shopping Campo Grande",
+                "endereco": "Av. Afonso Pena, Campo Grande",
+                "latitude": -20.4589183,
+                "longitude": -54.5879591
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -54.5879591,
+                    -20.4589183
+                ]
+                
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "nome": "Uniderp",
+                "endereco": "Avenida Ceará, nº 333, bairro Miguel Couto",
+                "latitude": -20.4690,
+                "longitude": -54.6205
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -54.5922,
+                    -20.4664
+                ]
+            }
+        }
+    ]
+}

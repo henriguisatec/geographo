@@ -1,0 +1,37 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "nome": "Sanesul - Administração Central",
+                "endereco": "Rua Dr. Zerbini, 421 - Campo Grande, MS",
+                "latitude": -20.5828,
+                "longitude": -54.4631
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -54.5828,
+                    -20.4631
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "nome": "Sanesul - Unidade Operacional",
+                "endereco": "R. Estrela do Sul, 300 - Vila Vilas Boas",
+                "latitude": -20.4789,
+                "longitude": -54.5935
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -54.5935,
+                    -20.4789
+                ]
+            }
+        }
+    ]
+}
