@@ -1,5 +1,7 @@
 # Geographo
 
+
+
 ## Visão geral
 
 Geographo é uma aplicação web desenvolvida para visualização e manipulação de dados geográficos em um mapa interativo. A aplicação permite importar arquivos no formato GeoJSON, visualizar seus elementos em um mapa, além de criar, editar e remover geometrias diretamente pela interface.
