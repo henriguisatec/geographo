@@ -15,10 +15,10 @@ A aplicação foi construída utilizando tecnologias web simples e amplamente ut
 * HTML
 * CSS
 * JavaScript
-* Leaflet (visualização de mapas) `https://leafletjs.com`
+* Leaflet (visualização de mapas) https://leafletjs.com
 * Leaflet Draw (criação e edição de geometrias)
 * GeoJSON (estrutura de dados geoespaciais)
-* OpenStreetMap (camada base do mapa) `https://www.openstreetmap.org.br`
+* OpenStreetMap (camada base do mapa) https://www.openstreetmap.org.br/
 
 A escolha dessas tecnologias foi feita por sua simplicidade de integração e pela ampla adoção em aplicações de geoprocessamento na web.
 
@@ -167,7 +167,7 @@ Para exportar os dados presentes no mapa:
 # Aesthetics
 
 O sistema ultiliza uma aparencia denominada "Liquid Glass" popular entre as UIs atuais.
-os CSS utilizados foram gerados através do site ´https://css.glass/´
+os CSS utilizados foram gerados através do site https://css.glass/
 
 ---
 
