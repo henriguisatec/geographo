@@ -1,7 +1,5 @@
 # Geographo
 
-
-
 ## Visão geral
 
 Geographo é uma aplicação web desenvolvida para visualização e manipulação de dados geográficos em um mapa interativo. A aplicação permite importar arquivos no formato GeoJSON, visualizar seus elementos em um mapa, além de criar, editar e remover geometrias diretamente pela interface.
@@ -17,10 +15,10 @@ A aplicação foi construída utilizando tecnologias web simples e amplamente ut
 * HTML
 * CSS
 * JavaScript
-* Leaflet (visualização de mapas)
+* Leaflet (visualização de mapas) `https://leafletjs.com`
 * Leaflet Draw (criação e edição de geometrias)
 * GeoJSON (estrutura de dados geoespaciais)
-* OpenStreetMap (camada base do mapa)
+* OpenStreetMap (camada base do mapa) `https://www.openstreetmap.org.br`
 
 A escolha dessas tecnologias foi feita por sua simplicidade de integração e pela ampla adoção em aplicações de geoprocessamento na web.
 
