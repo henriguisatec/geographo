@@ -12,6 +12,7 @@ O objetivo do projeto é demonstrar a manipulação de dados geoespaciais em um 
 
 A aplicação foi construída utilizando tecnologias web simples e amplamente utilizadas.
 
+```
 * HTML
 * CSS
 * JavaScript
@@ -19,6 +20,7 @@ A aplicação foi construída utilizando tecnologias web simples e amplamente ut
 * Leaflet Draw (criação e edição de geometrias)
 * GeoJSON (estrutura de dados geoespaciais)
 * OpenStreetMap (camada base do mapa) https://www.openstreetmap.org.br/
+```
 
 A escolha dessas tecnologias foi feita por sua simplicidade de integração e pela ampla adoção em aplicações de geoprocessamento na web.
 
