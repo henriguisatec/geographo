@@ -151,6 +151,8 @@ O projeto foi desenvolvido utilizando o Live Server através do Google Chrome.
 2. Selecione um arquivo `.json` ou `.geojson`.
 3. Os dados serão carregados e exibidos no mapa.
 
+Para ter acesso as unidades Sanesul como requisitado no desafio, importar o arquivo `data/sanesul.geojson`
+
 ---
 
 # Exportação de dados
@@ -159,6 +161,13 @@ Para exportar os dados presentes no mapa:
 
 1. Clique no botão **Exportar Dados**.
 2. Um arquivo GeoJSON será gerado contendo todos os elementos atualmente presentes no mapa.
+
+---
+
+# Aesthetics
+
+O sistema ultiliza uma aparencia denominada "Liquid Glass" popular entre as UIs atuais.
+os CSS utilizados foram gerados através do site ´https://css.glass/´
 
 ---
 
