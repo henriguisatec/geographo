@@ -28,7 +28,7 @@ const drawControl = new L.Control.Draw({
         circle: true,
         marker: true,
         polyline: true,
-        circlemarker: false
+        circlemarker: false // não sei bem o que é esse, então desabilitei pra não confundir com o circulo normal
     },
     edit: {
         featureGroup: drawnItems
@@ -141,7 +141,6 @@ function createGeoJSONLayer(data) {
 const saveData = () => {
 
     const data = drawnItems.toGeoJSON();
-
     localStorage.setItem("mapData", JSON.stringify(data));
 
 };
@@ -151,9 +150,7 @@ const savedData = localStorage.getItem("mapData");
 
 
 if (savedData) {
-
     const geojson = JSON.parse(savedData);
-
     const loadedLayer = createGeoJSONLayer(geojson);
 
     loadedLayer.eachLayer(layer => drawnItems.addLayer(layer));
@@ -169,7 +166,6 @@ if (savedData) {
         .then(data => {
 
             const layer = createGeoJSONLayer(data);
-
             layer.eachLayer(l => drawnItems.addLayer(l));
 
         })
@@ -180,7 +176,6 @@ if (savedData) {
         .then(data => {
 
             const layer = createGeoJSONLayer(data);
-
             layer.eachLayer(l => drawnItems.addLayer(l));
 
             if (layer.getLayers().length > 0) {
@@ -233,7 +228,6 @@ map.on(L.Draw.Event.EDITED, function (event) {
             const center = layer.getLatLng();
 
             layer.feature.geometry.coordinates = [center.lng, center.lat];
-
             props.raio = layer.getRadius();
 
         }
@@ -241,7 +235,6 @@ map.on(L.Draw.Event.EDITED, function (event) {
         if (layer instanceof L.Polygon) {
 
             const coords = layer.getLatLngs()[0].map(p => [p.lng, p.lat]);
-
             layer.feature.geometry.coordinates = [coords];
 
         }
@@ -249,7 +242,6 @@ map.on(L.Draw.Event.EDITED, function (event) {
         if (layer instanceof L.Polyline && !(layer instanceof L.Polygon)) {
 
             const coords = layer.getLatLngs().map(p => [p.lng, p.lat]);
-
             layer.feature.geometry.coordinates = coords;
 
         }
@@ -289,7 +281,6 @@ fileInput.addEventListener("change", function (event) {
             map.closePopup();
 
             const importedLayer = createGeoJSONLayer(geojsonData);
-
             importedLayer.eachLayer(layer => drawnItems.addLayer(layer));
 
             if (importedLayer.getLayers().length > 0) {
@@ -297,7 +288,6 @@ fileInput.addEventListener("change", function (event) {
             }
 
             localStorage.setItem("mapData", JSON.stringify(geojsonData));
-
             fileInput.value = "";
 
         } catch (err) {
@@ -317,18 +307,12 @@ fileInput.addEventListener("change", function (event) {
 exportBtn.addEventListener("click", function () {
 
     const data = drawnItems.toGeoJSON();
-
     const dataStr = JSON.stringify(data, null, 2);
-
     const blob = new Blob([dataStr], { type: "application/json" });
-
     const url = URL.createObjectURL(blob);
-
     const a = document.createElement("a");
-
     a.href = url;
-    a.download = "map-data.geojson";
-
+    a.download = "dados-mapa.geojson";
     a.click();
 
     URL.revokeObjectURL(url);
@@ -341,7 +325,6 @@ saveEdit.onclick = function () {
 
     const nome = editNome.value || "Local sem nome";
     const endereco = editEndereco.value || "Não informado";
-
     const layer = currentLayer;
     const type = layer._drawType;
 
@@ -352,7 +335,7 @@ saveEdit.onclick = function () {
             const ll = layer.getLatLng();
 
             layer.feature = {
-                type: "Feature",
+                type: "Feature", // lembrar que sempre latitude vem antes da longitude
                 properties: { nome, endereco, latitude: ll.lat, longitude: ll.lng },
                 geometry: { type: "Point", coordinates: [ll.lng, ll.lat] }
             };
@@ -383,7 +366,7 @@ saveEdit.onclick = function () {
 
         }
 
-        else if (type === "polyline") {
+        else if (type === "polyline") { 
 
             const coords = layer.getLatLngs().map(p => [p.lng, p.lat]);
 
