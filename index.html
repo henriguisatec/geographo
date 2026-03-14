@@ -7,10 +7,13 @@
     <title>Geographo</title>
 
     <link rel="stylesheet" href="style.css">
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
 </head>
@@ -28,11 +31,30 @@
 
     <div id="map"></div>
 
+    <img src="assets/sanesul.png" id="sanesulLogo" alt="Sanesul">
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+
+            <h3>Nomear Local</h3>
+
+            <label>Nome</label>
+            <input type="text" id="editNome">
+
+            <label>Endereço</label>
+            <input type="text" id="editEndereco">
+
+            <div class="modal-buttons">
+                <button id="saveEdit">Salvar</button>
+                <button id="cancelEdit">Cancelar</button>
+            </div>
+
+        </div>
+    </div>
+
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
     <script src="app.js"></script>
-    <img src="assets/sanesul.png" id="sanesulLogo" alt="Sanesul">
-    
 
 </body>
 

@@ -1,8 +1,20 @@
+"use strict";
+
+const modal = document.getElementById("editModal");
+const editNome = document.getElementById("editNome");
+const editEndereco = document.getElementById("editEndereco");
+const saveEdit = document.getElementById("saveEdit");
+const cancelEdit = document.getElementById("cancelEdit");
+
+let currentLayer = null;
+let creatingLayer = false;
+
+
 let geojsonLayer;
 
-const map = L.map('map').setView([-20.4697, -54.6201], 13);
+const map = L.map("map").setView([-20.4697, -54.6201], 13);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
 }).addTo(map);
 
@@ -25,6 +37,48 @@ const drawControl = new L.Control.Draw({
 
 map.addControl(drawControl);
 
+
+function buildPopup(layer, props) {
+
+    let popup = "";
+
+    if (props.nome) popup += `<b>${props.nome}</b><br>`;
+    if (props.endereco) popup += `${props.endereco}<br>`;
+
+    if (layer instanceof L.Marker || layer instanceof L.Circle) {
+
+        const ll = layer.getLatLng();
+
+        popup += `Lat: ${ll.lat}<br>Lon: ${ll.lng}`;
+
+    }
+
+    if (layer instanceof L.Circle) {
+
+        popup += `<br>Raio: ${layer.getRadius()}m`;
+
+    }
+
+    if (layer instanceof L.Polygon || layer instanceof L.Rectangle) {
+
+        const center = layer.getBounds().getCenter();
+
+        popup += `Lat: ${center.lat}<br>Lon: ${center.lng}`;
+
+    }
+
+    if (layer instanceof L.Polyline && !(layer instanceof L.Polygon)) {
+
+        const points = layer.getLatLngs();
+
+        popup += `Pontos: ${points.length}`;
+
+    }
+
+    return popup;
+
+}
+
 function bindEditPopup(layer) {
 
     layer.on("dblclick", function (event) {
@@ -35,41 +89,19 @@ function bindEditPopup(layer) {
             l.feature = { type: "Feature", properties: {}, geometry: {} };
         }
 
-        if (!l.feature.properties) {
-            l.feature.properties = {};
-        }
+        const props = l.feature.properties || {};
 
-        const props = l.feature.properties;
+        editNome.value = props.nome || "";
+        editEndereco.value = props.endereco || "";
 
-        const novoNome = prompt("Editar nome:", props.nome || "");
-        if (novoNome !== null) props.nome = novoNome;
+        currentLayer = l;
 
-        if (l instanceof L.Marker) {
-            const novoEndereco = prompt("Editar endereço:", props.endereco || "");
-            if (novoEndereco !== null) props.endereco = novoEndereco;
-        }
-
-        let popup = props.nome ? `<b>${props.nome}</b>` : "";
-
-        if (props.endereco) popup += `<br>${props.endereco}`;
-
-        if (l instanceof L.Marker) {
-            const ll = l.getLatLng();
-            popup += `<br>Lat: ${ll.lat}<br>Lon: ${ll.lng}`;
-        }
-
-        if (l instanceof L.Circle) {
-            const ll = l.getLatLng();
-            popup += `<br>Raio: ${l.getRadius()}m<br>Lat: ${ll.lat}<br>Lon: ${ll.lng}`;
-        }
-
-        l.bindPopup(popup);
-
-        saveData();
+        modal.style.display = "flex";
 
     });
 
 }
+
 
 function createGeoJSONLayer(data) {
 
@@ -86,6 +118,7 @@ function createGeoJSONLayer(data) {
             }
 
             return L.marker(latlng);
+
         },
 
         onEachFeature: function (feature, layer) {
@@ -94,29 +127,7 @@ function createGeoJSONLayer(data) {
 
             const props = feature.properties || {};
 
-            let popup = "";
-
-            if (props.nome) popup += `<b>${props.nome}</b><br>`;
-            if (props.endereco) popup += `${props.endereco}<br>`;
-
-            if (layer instanceof L.Circle) {
-
-                const ll = layer.getLatLng();
-
-                popup += `Raio: ${layer.getRadius()}m<br>`;
-                popup += `Lat: ${ll.lat}<br>Lon: ${ll.lng}`;
-
-            } else {
-
-                const ll = layer.getLatLng?.();
-
-                if (ll) {
-                    popup += `Lat: ${ll.lat}<br>Lon: ${ll.lng}`;
-                }
-
-            }
-
-            layer.bindPopup(popup);
+            layer.bindPopup(buildPopup(layer, props));
 
             bindEditPopup(layer);
 
@@ -126,12 +137,18 @@ function createGeoJSONLayer(data) {
 
 }
 
-function saveData() {
+
+const saveData = () => {
+
     const data = drawnItems.toGeoJSON();
+
     localStorage.setItem("mapData", JSON.stringify(data));
-}
+
+};
+
 
 const savedData = localStorage.getItem("mapData");
+
 
 if (savedData) {
 
@@ -148,108 +165,51 @@ if (savedData) {
 } else {
 
     fetch("data/sanesul.geojson")
-        .then(response => response.json())
+        .then(res => res.json())
         .then(data => {
 
-            const sanesulLayer = createGeoJSONLayer(data);
+            const layer = createGeoJSONLayer(data);
 
-            sanesulLayer.eachLayer(layer => drawnItems.addLayer(layer));
+            layer.eachLayer(l => drawnItems.addLayer(l));
 
-        });
+        })
+        .catch(console.error);
 
     fetch("data/data.geojson")
-        .then(response => response.json())
+        .then(res => res.json())
         .then(data => {
 
-            geojsonLayer = createGeoJSONLayer(data);
+            const layer = createGeoJSONLayer(data);
 
-            geojsonLayer.eachLayer(layer => drawnItems.addLayer(layer));
+            layer.eachLayer(l => drawnItems.addLayer(l));
 
-            if (geojsonLayer.getLayers().length > 0) {
-                map.fitBounds(geojsonLayer.getBounds());
+            if (layer.getLayers().length > 0) {
+                map.fitBounds(layer.getBounds());
             }
 
-        });
+        })
+        .catch(console.error);
 
 }
+
 
 map.on(L.Draw.Event.CREATED, function (event) {
 
     const layer = event.layer;
     const type = event.layerType;
 
-    let nome = prompt("Nome do local:");
-    if (!nome) nome = "Local sem nome";
+    currentLayer = layer;
+    creatingLayer = true;
 
-    let endereco = "";
-    let lat, lon;
+    layer._drawType = type;
 
-    if (type === "marker") {
+    editNome.value = "";
+    editEndereco.value = "";
 
-        endereco = prompt("Endereço:") || "Não informado";
-
-        const ll = layer.getLatLng();
-        lat = ll.lat;
-        lon = ll.lng;
-
-        layer.feature = {
-            type: "Feature",
-            properties: { nome, endereco, latitude: lat, longitude: lon },
-            geometry: { type: "Point", coordinates: [lon, lat] }
-        };
-
-    }
-
-    else if (type === "circle") {
-
-        const center = layer.getLatLng();
-
-        layer.feature = {
-            type: "Feature",
-            properties: { nome, tipo: "circle", raio: layer.getRadius() },
-            geometry: { type: "Point", coordinates: [center.lng, center.lat] }
-        };
-
-    }
-
-    else if (type === "polygon" || type === "rectangle") {
-
-        const coords = layer.getLatLngs()[0].map(p => [p.lng, p.lat]);
-
-        layer.feature = {
-            type: "Feature",
-            properties: { nome },
-            geometry: { type: "Polygon", coordinates: [coords] }
-        };
-
-    }
-
-    else if (type === "polyline") {
-
-        const coords = layer.getLatLngs().map(p => [p.lng, p.lat]);
-
-        layer.feature = {
-            type: "Feature",
-            properties: { nome },
-            geometry: { type: "LineString", coordinates: coords }
-        };
-
-    }
-
-    let popup = `<b>${nome}</b>`;
-
-    if (endereco) popup += `<br>${endereco}`;
-    if (lat && lon) popup += `<br>Lat: ${lat}<br>Lon: ${lon}`;
-
-    layer.bindPopup(popup);
-
-    bindEditPopup(layer);
-
-    drawnItems.addLayer(layer);
-
-    saveData();
+    modal.style.display = "flex";
 
 });
+
 
 map.on(L.Draw.Event.EDITED, function (event) {
 
@@ -300,14 +260,16 @@ map.on(L.Draw.Event.EDITED, function (event) {
 
 });
 
+
 map.on(L.Draw.Event.DELETED, saveData);
+
 
 const loadBtn = document.getElementById("loadBtn");
 const fileInput = document.getElementById("fileInput");
+const exportBtn = document.getElementById("exportBtn");
 
-loadBtn.addEventListener("click", () => {
-    fileInput.click();
-});
+
+loadBtn.addEventListener("click", () => fileInput.click());
 
 
 fileInput.addEventListener("change", function (event) {
@@ -319,25 +281,38 @@ fileInput.addEventListener("change", function (event) {
 
     reader.onload = function (e) {
 
-        const geojsonData = JSON.parse(e.target.result);
+        try {
 
-        drawnItems.clearLayers();
+            const geojsonData = JSON.parse(e.target.result);
 
-        const importedLayer = createGeoJSONLayer(geojsonData);
+            drawnItems.clearLayers();
+            map.closePopup();
 
-        importedLayer.eachLayer(layer => drawnItems.addLayer(layer));
+            const importedLayer = createGeoJSONLayer(geojsonData);
 
-        if (importedLayer.getLayers().length > 0) {
-            map.fitBounds(importedLayer.getBounds());
+            importedLayer.eachLayer(layer => drawnItems.addLayer(layer));
+
+            if (importedLayer.getLayers().length > 0) {
+                map.fitBounds(importedLayer.getBounds());
+            }
+
+            localStorage.setItem("mapData", JSON.stringify(geojsonData));
+
+            fileInput.value = "";
+
+        } catch (err) {
+
+            console.error(err);
+            alert("Arquivo GeoJSON inválido");
+
         }
-
-        localStorage.setItem("mapData", JSON.stringify(geojsonData));
 
     };
 
     reader.readAsText(file);
 
 });
+
 
 exportBtn.addEventListener("click", function () {
 
@@ -350,11 +325,104 @@ exportBtn.addEventListener("click", function () {
     const url = URL.createObjectURL(blob);
 
     const a = document.createElement("a");
+
     a.href = url;
     a.download = "map-data.geojson";
+
     a.click();
 
     URL.revokeObjectURL(url);
 
 });
 
+saveEdit.onclick = function () {
+
+    if (!currentLayer) return;
+
+    const nome = editNome.value || "Local sem nome";
+    const endereco = editEndereco.value || "Não informado";
+
+    const layer = currentLayer;
+    const type = layer._drawType;
+
+    if (creatingLayer) {
+
+        if (type === "marker") {
+
+            const ll = layer.getLatLng();
+
+            layer.feature = {
+                type: "Feature",
+                properties: { nome, endereco, latitude: ll.lat, longitude: ll.lng },
+                geometry: { type: "Point", coordinates: [ll.lng, ll.lat] }
+            };
+
+        }
+
+        else if (type === "circle") {
+
+            const center = layer.getLatLng();
+
+            layer.feature = {
+                type: "Feature",
+                properties: { nome, endereco, tipo: "circle", raio: layer.getRadius() },
+                geometry: { type: "Point", coordinates: [center.lng, center.lat] }
+            };
+
+        }
+
+        else if (type === "polygon" || type === "rectangle") {
+
+            const coords = layer.getLatLngs()[0].map(p => [p.lng, p.lat]);
+
+            layer.feature = {
+                type: "Feature",
+                properties: { nome, endereco },
+                geometry: { type: "Polygon", coordinates: [coords] }
+            };
+
+        }
+
+        else if (type === "polyline") {
+
+            const coords = layer.getLatLngs().map(p => [p.lng, p.lat]);
+
+            layer.feature = {
+                type: "Feature",
+                properties: { nome, endereco },
+                geometry: { type: "LineString", coordinates: coords }
+            };
+
+        }
+
+        layer.bindPopup(buildPopup(layer, layer.feature.properties));
+        bindEditPopup(layer);
+
+        drawnItems.addLayer(layer);
+
+        creatingLayer = false;
+
+    } else {
+
+        const props = layer.feature.properties;
+
+        props.nome = nome;
+        props.endereco = endereco;
+
+        layer.bindPopup(buildPopup(layer, props));
+
+    }
+
+    saveData();
+
+    modal.style.display = "none";
+    currentLayer = null;
+
+};
+
+cancelEdit.onclick = function () {
+
+    modal.style.display = "none";
+    currentLayer = null;
+
+};
